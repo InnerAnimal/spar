@@ -1,10 +1,21 @@
 import OpenAI from 'openai'
 
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+let openaiInstance: OpenAI | null = null
+
+function getOpenAI() {
+  if (!openaiInstance) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not set')
+    }
+    openaiInstance = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+  return openaiInstance
+}
 
 export async function chatWithGPT4(messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>) {
+  const openai = getOpenAI()
   const completion = await openai.chat.completions.create({
     model: 'gpt-4',
     messages: messages.map(msg => ({
