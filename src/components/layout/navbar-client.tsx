@@ -24,33 +24,33 @@ export function NavbarClient() {
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="text-xl font-bold hover:text-primary transition-colors">
             InnerAnimalMedia
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/services" className="text-sm font-medium hover:text-primary">
+            <Link href="/services" className="text-sm font-medium hover:text-primary transition-colors">
               Services
             </Link>
-            <Link href="/portfolio" className="text-sm font-medium hover:text-primary">
+            <Link href="/portfolio" className="text-sm font-medium hover:text-primary transition-colors">
               Portfolio
             </Link>
-            <Link href="/blog" className="text-sm font-medium hover:text-primary">
+            <Link href="/blog" className="text-sm font-medium hover:text-primary transition-colors">
               Blog
             </Link>
-            <Link href="/contact" className="text-sm font-medium hover:text-primary">
+            <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
               Contact
             </Link>
             {user ? (
               <Link
                 href="/app/dashboard"
-                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 Dashboard
               </Link>
             ) : (
               <Link
                 href="/auth/login"
-                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 Login
               </Link>

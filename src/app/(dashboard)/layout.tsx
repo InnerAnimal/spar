@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { LogoutButton } from '@/components/layout/logout-button'
 
 export default async function DashboardLayout({
   children,
@@ -26,7 +27,9 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen">
       <aside className="w-64 border-r border-border bg-card">
         <div className="p-6">
-          <h2 className="text-xl font-bold">InnerAnimalMedia</h2>
+          <Link href="/app/dashboard" className="text-xl font-bold hover:text-primary">
+            InnerAnimalMedia
+          </Link>
         </div>
         <nav className="space-y-1 px-4">
           <Link
@@ -61,6 +64,9 @@ export default async function DashboardLayout({
               Admin
             </Link>
           )}
+          <div className="pt-4 border-t border-border mt-4">
+            <LogoutButton />
+          </div>
         </nav>
       </aside>
       <main className="flex-1">{children}</main>

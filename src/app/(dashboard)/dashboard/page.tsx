@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -32,24 +33,24 @@ export default async function DashboardPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             Start chatting with AI assistants
           </p>
-          <a
+          <Link
             href="/app/chat"
             className="mt-4 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Go to Chat
-          </a>
+          </Link>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">
           <h3 className="text-lg font-semibold">Community</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             Join discussions and share ideas
           </p>
-          <a
+          <Link
             href="/app/community"
             className="mt-4 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Visit Community
-          </a>
+          </Link>
         </div>
       </div>
     </div>
