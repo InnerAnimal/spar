@@ -1,0 +1,256 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TNR Request Form
+model TNRRequest {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Personal Info
+  firstName String
+  lastName  String
+  address   String
+  address2  String?
+  city      String
+  state     String
+  zipCode   String
+  phone     String
+  email     String
+
+  // Cat Questions
+  howManyCats           String
+  anyInjuredOrSick      String
+  howLongHadThem        String?
+  areTheyFixed          String?
+  additionalInformation String?
+
+  @@map("tnr_requests")
+}
+
+// Adoption Application Form
+model AdoptionApplication {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Personal Information
+  petInterested             String
+  firstName                 String
+  lastName                  String
+  birthday                  DateTime?
+  employerInfo              String?
+  phone                     String
+  email                     String
+
+  // Housing and Living Arrangements
+  address                   String
+  address2                  String?
+  city                      String
+  state                     String
+  zipCode                   String
+  ownOrRent                 String
+  yardFenced                String
+  petsAllowed               String
+  howLongAtAddress          String
+  animalPrimaryLocation     String
+  ifMovePetsNotAllowed      String
+  adultsAndChildrenCount    String
+  childrenAges              String?
+  hoursAlonePerDay          String
+  whoResponsible            String
+  everyoneCommitted         String
+  anyoneAllergies           String
+  animalRole                String
+  activityLevel             String
+
+  // Animal Behavior and Cost
+  handlePottyAccidents      String
+  behaviorsNotTolerate      String
+  handleBehaviorIssues      String
+  monthlyPreventativesBudget String
+  annualVetBudget           String
+  everTakenToShelter        String
+  everAppliedToAdopt        String
+  applicationApproved       String?
+
+  // Animal History and Care
+  howManyPetsInLife         String
+  lostPetInLast5Years       String
+  currentPets               String
+  currentPetsList           String?
+  petsHousebroken           String?
+  petsSpayedNeutered        String?
+  petsVaccinesUpToDate      String?
+  wherePetsLive             String?
+  heartwormPreventative     String?
+  vetInfo                   String?
+
+  // Signatures and Agreement
+  certificationSignature    String
+  agreementSignature        String
+  spayNeuterInitial         String?
+  vaccineSeriesInitial      String?
+  referenceCheckInitial     String?
+  mistreatmentInitial       String
+
+  // Payment
+  paymentMethod             String
+  additionalDonation        String?
+
+  @@map("adoption_applications")
+}
+
+// Contact Form
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name    String
+  email   String
+  phone   String?
+  subject String?
+  message String
+
+  @@map("contact_submissions")
+}
+
+// Surrender Request Form
+model SurrenderRequest {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Owner Info
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String
+  city      String
+  state     String
+  zipCode   String
+
+  // Animal Info
+  animalName   String
+  animalType   String
+  breed        String?
+  age          String
+  gender       String
+  spayedNeutered String
+  vaccinated   String
+  reason       String
+
+  @@map("surrender_requests")
+}
+
+// Foster Application Form
+model FosterApplication {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Personal Info
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String
+  city      String
+  state     String
+  zipCode   String
+
+  // Housing
+  ownOrRent            String
+  landlordPermission   String?
+  yardFenced           String
+  otherPets            String
+  otherPetsDetails     String?
+  experience           String
+  availability         String
+  preferredAnimalType  String
+
+  @@map("foster_applications")
+}
+
+// Volunteer Signup Form
+model VolunteerSignup {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName            String
+  lastName             String
+  email                String
+  phone                String
+  address              String?
+  city                 String?
+  state                String?
+  zipCode              String?
+  availability         String
+  interests            String
+  experience           String?
+  emergencyContact     String?
+  emergencyPhone       String?
+
+  @@map("volunteer_signups")
+}
+
+// Donate Pledge Form
+model DonatePledge {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName      String
+  lastName       String
+  email          String
+  phone          String?
+  amount         String
+  frequency      String
+  paymentMethod  String
+  anonymous      Boolean @default(false)
+
+  @@map("donate_pledges")
+}
+
+// Animal Listings (for Adopt page)
+model Animal {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  type        String // "dog" or "cat"
+  breed       String?
+  age         String
+  gender      String
+  price       Int
+  description String?
+  imageUrl    String?
+
+  // Health info
+  spayedNeutered       Boolean @default(false)
+  vaccinated           Boolean @default(false)
+  microchipped         Boolean @default(false)
+  heartwormStatus      String? // "negative", "positive", "unknown"
+  healthNotes          String?
+
+  // Special flags
+  specialNote          String? // "Very shy", "Heartworm positive", etc.
+  fosterToAdopt        Boolean @default(false)
+  availableForReservation Boolean @default(false)
+
+  status      String @default("available") // "available", "pending", "adopted"
+
+  @@map("animals")
+}
