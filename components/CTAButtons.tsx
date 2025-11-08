@@ -10,11 +10,11 @@ interface ButtonProps {
   className?: string;
 }
 
-const baseStyles = 'font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+const baseStyles = 'font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md hover:shadow-lg';
 const variantStyles = {
-  primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-  secondary: 'bg-gray-600 hover:bg-gray-700 text-white focus:ring-gray-500',
-  outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 focus:ring-blue-500',
+  primary: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
+  secondary: 'bg-gray-900 hover:bg-gray-800 text-white focus:ring-gray-500',
+  outline: 'border-2 border-green-600 text-green-600 hover:bg-green-50 focus:ring-green-500',
 };
 const sizeStyles = {
   sm: 'px-4 py-2 text-sm',

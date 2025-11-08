@@ -227,12 +227,12 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Contact Information */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white border-b pb-2">
+        <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-3 mb-4">
           Contact Information
         </h3>
 
         <div>
-          <label htmlFor="requester_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="requester_name" className="block text-sm font-medium text-gray-700 mb-2">
             Full Name <span className="text-red-500">*</span>
           </label>
           <input
@@ -241,8 +241,8 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
             name="requester_name"
             value={formData.requester_name}
             onChange={handleChange}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white ${
-              errors.requester_name ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${
+              errors.requester_name ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
             }`}
             required
           />
@@ -253,7 +253,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="requester_email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="requester_email" className="block text-sm font-medium text-gray-700 mb-2">
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -262,8 +262,8 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
               name="requester_email"
               value={formData.requester_email}
               onChange={handleChange}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white ${
-                errors.requester_email ? 'border-red-500' : 'border-gray-300'
+              className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${
+                errors.requester_email ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
               }`}
               required
             />
@@ -273,7 +273,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
           </div>
 
           <div>
-            <label htmlFor="requester_phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label htmlFor="requester_phone" className="block text-sm font-medium text-gray-700 mb-2">
               Phone <span className="text-red-500">*</span>
             </label>
             <input
@@ -283,8 +283,8 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
               value={formData.requester_phone}
               onChange={handleChange}
               placeholder="337-555-0123"
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white ${
-                errors.requester_phone ? 'border-red-500' : 'border-gray-300'
+              className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors ${
+                errors.requester_phone ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
               }`}
               required
             />
@@ -401,7 +401,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
         </div>
 
         <div>
-          <label htmlFor="colony_location_description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label htmlFor="colony_location_description" className="block text-sm font-medium text-gray-700 mb-2">
             Colony Location Description
           </label>
           <textarea
@@ -410,7 +410,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
             value={formData.colony_location_description}
             onChange={handleChange}
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors bg-white"
             placeholder="Describe where the colony is located..."
           />
         </div>
@@ -433,7 +433,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
 
       {/* Additional Questions */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white border-b pb-2">
+        <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-3 mb-4">
           Additional Information
         </h3>
 
@@ -538,19 +538,29 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
       )}
 
       {/* Submit Button */}
-      <div className="flex gap-4 pt-4">
+      <div className="flex gap-4 pt-6 border-t border-gray-200">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit TNR Request'}
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Submitting...
+            </span>
+          ) : (
+            'Submit TNR Request'
+          )}
         </button>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+            className="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
           >
             Cancel
           </button>

@@ -1,12 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // GitHub Pages Configuration
-  output: 'export', // Static export for GitHub Pages
-  basePath: '/spar', // GitHub Pages subdirectory
+  // Vercel Configuration
+  // Removed 'output: export' - Vercel uses serverless functions for API routes
+  // Removed 'basePath' - Use custom domain or Vercel subdomain
+  
   images: {
-    unoptimized: true, // Required for static export
+    // Vercel optimizes images automatically
+    unoptimized: false,
   },
-  trailingSlash: true, // GitHub Pages works better with trailing slashes
+  
+  trailingSlash: false,
   
   // Enable React strict mode
   reactStrictMode: true,
