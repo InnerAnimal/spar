@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { tnrRequestSchema } from '@/lib/validation/tnr-request'
 import { ZodError } from 'zod'
 
@@ -10,10 +10,17 @@ export async function POST(request: NextRequest) {
     // Validate the form data
     const validatedData = tnrRequestSchema.parse(body)
 
-    // Save to database
-    const submission = await prisma.tNRRequest.create({
-      data: validatedData,
-    })
+    // Save to database using Supabase
+    const { data: submission, error } = await supabase
+      .from('tnr_requests')
+      .insert([validatedData])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase insert error:', error)
+      throw new Error('Failed to save TNR request')
+    }
 
     // TODO: Send email notifications here
     // await sendTNRConfirmationEmail(submission)
