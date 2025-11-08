@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { DonateSection } from '../components/shared/DonateSection'
+import { TNRRequestButton, AdoptionButton, DonationButton } from '@/components/CTAButtons'
 
 export default function HomePage() {
   const benefits = [

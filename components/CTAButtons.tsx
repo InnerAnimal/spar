@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useModal } from '@/contexts/ModalContext';
 
 interface ButtonProps {
@@ -49,8 +50,9 @@ export function AdoptionButton({
   variant = 'primary', 
   size = 'md', 
   fullWidth = false,
-  className = '' 
-}: ButtonProps) {
+  className = '',
+  children
+}: ButtonProps & { children?: React.ReactNode }) {
   const { openModal } = useModal();
 
   return (
@@ -64,7 +66,7 @@ export function AdoptionButton({
         ${className}
       `}
     >
-      Apply to Adopt
+      {children || 'Apply to Adopt'}
     </button>
   );
 }

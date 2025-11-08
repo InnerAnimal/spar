@@ -126,20 +126,27 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
         .single();
 
       // Send email notification with request ID for analytics
-      const response = await fetch('/api/send-tnr-notification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          _requestId: insertedData.id,
-          _analyticsId: analyticsData?.id || null,
-        }),
-      });
+      // Note: API routes don't work with GitHub Pages static export
+      // Email notifications will work when deployed to Vercel
+      try {
+        const response = await fetch('/api/send-tnr-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...formData,
+            _requestId: insertedData.id,
+            _analyticsId: analyticsData?.id || null,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to send notification');
+        if (!response.ok) {
+          console.warn('Email notification failed (API route not available on GitHub Pages)');
+        }
+      } catch (emailError) {
+        // Silently fail - email will work on Vercel
+        console.warn('Email notification skipped (static export mode)');
       }
 
       // Send submission analytics to InnerAnimalMedia dashboard (non-blocking)

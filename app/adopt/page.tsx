@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { DonateSection } from '../../components/shared/DonateSection'
+import { AdoptionButton } from '@/components/CTAButtons'
 
 type Animal = {
   id: string
@@ -313,12 +314,12 @@ export default function AdoptPage() {
                   </ul>
                 </div>
 
-                <a
-                  href="/forms/adoption-application"
-                  className="block w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                <AdoptionButton
+                  fullWidth
+                  className="bg-green-600 hover:bg-green-700 text-white"
                 >
                   {animal.buttonText || 'Apply to Adopt'}
-                </a>
+                </AdoptionButton>
               </div>
             ))}
           </div>
