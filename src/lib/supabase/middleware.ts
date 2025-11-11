@@ -6,9 +6,14 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  // If Supabase env vars are not set, just pass through the request
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
@@ -60,11 +65,25 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Public routes that don't require authentication
+  const publicRoutes = [
+    '/',
+    '/adopt',
+    '/services',
+    '/forms',
+    '/privacy',
+    '/terms',
+  ]
+
+  const isPublicRoute = publicRoutes.some(route =>
+    request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith(`${route}/`)
+  )
+
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/auth') &&
     !request.nextUrl.pathname.startsWith('/api') &&
-    request.nextUrl.pathname !== '/'
+    !isPublicRoute
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
