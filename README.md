@@ -2,6 +2,8 @@
 
 A full-stack platform built with Next.js 14, Supabase, Stripe, and AI integrations.
 
+**Note:** This repository also hosts the Southern Pets Animal Rescue (SPAR) website.
+
 ## Features
 
 - **AI Chat Platform**: Dual AI interface with ChatGPT (GPT-4) and Anthropic Claude
