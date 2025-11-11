@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
-import { tnrRequestSchema } from '@/lib/validation/tnr-request'
+import { prisma } from '../../../../lib/db'
+import { tnrRequestSchema } from '../../../../lib/validation/tnr-request'
 import { ZodError } from 'zod'
 
 export async function POST(request: NextRequest) {
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof ZodError) {
       const errors: Record<string, string> = {}
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         if (err.path[0]) {
           errors[err.path[0] as string] = err.message
         }

@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Input } from '@/components/ui/Input'
-import { Textarea } from '@/components/ui/Textarea'
-import { Button } from '@/components/ui/Button'
-import type { TNRRequestData } from '@/lib/validation/tnr-request'
+import { Input } from '../../../components/ui/Input'
+import { Textarea } from '../../../components/ui/Textarea'
+import { Button } from '../../../components/ui/Button'
+import type { TNRRequestData } from '../../../lib/validation/tnr-request'
 
 export default function TNRRequestPage() {
   const router = useRouter()

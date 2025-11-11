@@ -1,260 +1,197 @@
--- Southern Pets Animal Rescue Database Schema
+-- =====================================================
+-- INNERANIMALMEDIA PLATFORM - DATABASE SCHEMA
+-- Run this in Supabase SQL Editor
+-- =====================================================
 
--- Enable UUID extension for generating IDs
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- TNR Request Form
-CREATE TABLE IF NOT EXISTS tnr_requests (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-  -- Personal Info
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  address TEXT NOT NULL,
-  address2 TEXT,
-  city TEXT NOT NULL,
-  state TEXT NOT NULL,
-  zip_code TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  email TEXT NOT NULL,
-
-  -- Cat Questions
-  how_many_cats TEXT NOT NULL,
-  any_injured_or_sick TEXT NOT NULL,
-  how_long_had_them TEXT,
-  are_they_fixed TEXT,
-  additional_information TEXT
+-- Users (extends Supabase auth.users)
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id UUID REFERENCES auth.users(id) PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  full_name TEXT,
+  avatar_url TEXT,
+  role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+  company TEXT,
+  stripe_customer_id TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create index for faster queries
-CREATE INDEX IF NOT EXISTS idx_tnr_requests_created_at ON tnr_requests(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_tnr_requests_email ON tnr_requests(email);
-
--- Adoption Application Form
-CREATE TABLE IF NOT EXISTS adoption_applications (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-
-  -- Personal Information
-  pet_interested TEXT NOT NULL,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  birthday TIMESTAMPTZ,
-  employer_info TEXT,
-  phone TEXT NOT NULL,
-  email TEXT NOT NULL,
-
-  -- Housing and Living Arrangements
-  address TEXT NOT NULL,
-  address2 TEXT,
-  city TEXT NOT NULL,
-  state TEXT NOT NULL,
-  zip_code TEXT NOT NULL,
-  own_or_rent TEXT NOT NULL,
-  yard_fenced TEXT NOT NULL,
-  pets_allowed TEXT NOT NULL,
-  how_long_at_address TEXT NOT NULL,
-  animal_primary_location TEXT NOT NULL,
-  if_move_pets_not_allowed TEXT NOT NULL,
-  adults_and_children_count TEXT NOT NULL,
-  children_ages TEXT,
-  hours_alone_per_day TEXT NOT NULL,
-  who_responsible TEXT NOT NULL,
-  everyone_committed TEXT NOT NULL,
-  anyone_allergies TEXT NOT NULL,
-  animal_role TEXT NOT NULL,
-  activity_level TEXT NOT NULL,
-
-  -- Animal Behavior and Cost
-  handle_potty_accidents TEXT NOT NULL,
-  behaviors_not_tolerate TEXT NOT NULL,
-  handle_behavior_issues TEXT NOT NULL,
-  monthly_preventatives_budget TEXT NOT NULL,
-  annual_vet_budget TEXT NOT NULL,
-  ever_taken_to_shelter TEXT NOT NULL,
-  ever_applied_to_adopt TEXT NOT NULL,
-  application_approved TEXT,
-
-  -- Animal History and Care
-  how_many_pets_in_life TEXT NOT NULL,
-  lost_pet_in_last5_years TEXT NOT NULL,
-  current_pets TEXT NOT NULL,
-  current_pets_list TEXT,
-  pets_housebroken TEXT,
-  pets_spayed_neutered TEXT,
-  pets_vaccines_up_to_date TEXT,
-  where_pets_live TEXT,
-  heartworm_preventative TEXT,
-  vet_info TEXT,
-
-  -- Signatures and Agreement
-  certification_signature TEXT NOT NULL,
-  agreement_signature TEXT NOT NULL,
-  spay_neuter_initial TEXT,
-  vaccine_series_initial TEXT,
-  reference_check_initial TEXT,
-  mistreatment_initial TEXT NOT NULL,
-
-  -- Payment
-  payment_method TEXT NOT NULL,
-  additional_donation TEXT
+-- AI Chat Conversations
+CREATE TABLE IF NOT EXISTS public.conversations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  title TEXT,
+  model TEXT NOT NULL CHECK (model IN ('gpt-4', 'claude-3')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create indexes
-CREATE INDEX IF NOT EXISTS idx_adoption_applications_created_at ON adoption_applications(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_adoption_applications_email ON adoption_applications(email);
+-- AI Chat Messages
+CREATE TABLE IF NOT EXISTS public.messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  conversation_id UUID REFERENCES public.conversations(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+  content TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
--- Contact Form
-CREATE TABLE IF NOT EXISTS contact_submissions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+-- Community Posts
+CREATE TABLE IF NOT EXISTS public.posts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  parent_id UUID REFERENCES public.posts(id) ON DELETE CASCADE,
+  title TEXT,
+  content TEXT NOT NULL,
+  likes INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
 
+-- Video Rooms
+CREATE TABLE IF NOT EXISTS public.video_rooms (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  host_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  room_name TEXT NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  max_participants INTEGER DEFAULT 10,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Video Participants
+CREATE TABLE IF NOT EXISTS public.video_participants (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  room_id UUID REFERENCES public.video_rooms(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  joined_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  left_at TIMESTAMP WITH TIME ZONE
+);
+
+-- Stripe Subscriptions
+CREATE TABLE IF NOT EXISTS public.subscriptions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  stripe_customer_id TEXT UNIQUE,
+  stripe_subscription_id TEXT UNIQUE,
+  plan_name TEXT,
+  status TEXT,
+  current_period_end TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Contact Form Submissions
+CREATE TABLE IF NOT EXISTS public.contact_submissions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
-  phone TEXT,
-  subject TEXT,
-  message TEXT NOT NULL
+  company TEXT,
+  message TEXT NOT NULL,
+  status TEXT DEFAULT 'new' CHECK (status IN ('new', 'read', 'responded')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_contact_submissions_created_at ON contact_submissions(created_at DESC);
+-- Enable Row Level Security
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.video_rooms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.video_participants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.contact_submissions ENABLE ROW LEVEL SECURITY;
 
--- Surrender Request Form
-CREATE TABLE IF NOT EXISTS surrender_requests (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+-- RLS Policies
+-- Profiles: Users can view and update their own profile
+CREATE POLICY "Users can view own profile" ON public.profiles
+  FOR SELECT USING (auth.uid() = id);
 
-  -- Owner Info
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  address TEXT NOT NULL,
-  city TEXT NOT NULL,
-  state TEXT NOT NULL,
-  zip_code TEXT NOT NULL,
+CREATE POLICY "Users can update own profile" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id);
 
-  -- Animal Info
-  animal_name TEXT NOT NULL,
-  animal_type TEXT NOT NULL,
-  breed TEXT,
-  age TEXT NOT NULL,
-  gender TEXT NOT NULL,
-  spayed_neutered TEXT NOT NULL,
-  vaccinated TEXT NOT NULL,
-  reason TEXT NOT NULL
-);
+-- Conversations: Users can only see their own conversations
+CREATE POLICY "Users can view own conversations" ON public.conversations
+  FOR SELECT USING (auth.uid() = user_id);
 
-CREATE INDEX IF NOT EXISTS idx_surrender_requests_created_at ON surrender_requests(created_at DESC);
+CREATE POLICY "Users can create conversations" ON public.conversations
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
 
--- Foster Application Form
-CREATE TABLE IF NOT EXISTS foster_applications (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+CREATE POLICY "Users can update own conversations" ON public.conversations
+  FOR UPDATE USING (auth.uid() = user_id);
 
-  -- Personal Info
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  address TEXT NOT NULL,
-  city TEXT NOT NULL,
-  state TEXT NOT NULL,
-  zip_code TEXT NOT NULL,
+CREATE POLICY "Users can delete own conversations" ON public.conversations
+  FOR DELETE USING (auth.uid() = user_id);
 
-  -- Housing
-  own_or_rent TEXT NOT NULL,
-  landlord_permission TEXT,
-  yard_fenced TEXT NOT NULL,
-  other_pets TEXT NOT NULL,
-  other_pets_details TEXT,
-  experience TEXT NOT NULL,
-  availability TEXT NOT NULL,
-  preferred_animal_type TEXT NOT NULL
-);
+-- Messages: Users can only see messages from their conversations
+CREATE POLICY "Users can view own messages" ON public.messages
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.conversations
+      WHERE conversations.id = messages.conversation_id
+      AND conversations.user_id = auth.uid()
+    )
+  );
 
-CREATE INDEX IF NOT EXISTS idx_foster_applications_created_at ON foster_applications(created_at DESC);
+CREATE POLICY "Users can create messages" ON public.messages
+  FOR INSERT WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.conversations
+      WHERE conversations.id = messages.conversation_id
+      AND conversations.user_id = auth.uid()
+    )
+  );
 
--- Volunteer Signup Form
-CREATE TABLE IF NOT EXISTS volunteer_signups (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+-- Posts: Everyone can read, authenticated users can create
+CREATE POLICY "Anyone can view posts" ON public.posts
+  FOR SELECT USING (true);
 
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  address TEXT,
-  city TEXT,
-  state TEXT,
-  zip_code TEXT,
-  availability TEXT NOT NULL,
-  interests TEXT NOT NULL,
-  experience TEXT,
-  emergency_contact TEXT,
-  emergency_phone TEXT
-);
+CREATE POLICY "Authenticated users can create posts" ON public.posts
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-CREATE INDEX IF NOT EXISTS idx_volunteer_signups_created_at ON volunteer_signups(created_at DESC);
+CREATE POLICY "Users can update own posts" ON public.posts
+  FOR UPDATE USING (auth.uid() = user_id);
 
--- Donate Pledge Form
-CREATE TABLE IF NOT EXISTS donate_pledges (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+CREATE POLICY "Users can delete own posts" ON public.posts
+  FOR DELETE USING (auth.uid() = user_id);
 
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  phone TEXT,
-  amount TEXT NOT NULL,
-  frequency TEXT NOT NULL,
-  payment_method TEXT NOT NULL,
-  anonymous BOOLEAN NOT NULL DEFAULT FALSE
-);
+-- Video Rooms: Everyone can view active rooms, authenticated users can create
+CREATE POLICY "Anyone can view active rooms" ON public.video_rooms
+  FOR SELECT USING (is_active = true);
 
-CREATE INDEX IF NOT EXISTS idx_donate_pledges_created_at ON donate_pledges(created_at DESC);
+CREATE POLICY "Authenticated users can create rooms" ON public.video_rooms
+  FOR INSERT WITH CHECK (auth.uid() = host_id);
 
--- Animal Listings (for Adopt page)
-CREATE TABLE IF NOT EXISTS animals (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+-- Video Participants: Users can see participants in rooms they're in
+CREATE POLICY "Users can view room participants" ON public.video_participants
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.video_rooms
+      WHERE video_rooms.id = video_participants.room_id
+      AND video_rooms.is_active = true
+    )
+  );
 
-  name TEXT NOT NULL,
-  type TEXT NOT NULL, -- "dog" or "cat"
-  breed TEXT,
-  age TEXT NOT NULL,
-  gender TEXT NOT NULL,
-  price INTEGER NOT NULL,
-  description TEXT,
-  image_url TEXT,
+CREATE POLICY "Authenticated users can join rooms" ON public.video_participants
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-  -- Health info
-  spayed_neutered BOOLEAN NOT NULL DEFAULT FALSE,
-  vaccinated BOOLEAN NOT NULL DEFAULT FALSE,
-  microchipped BOOLEAN NOT NULL DEFAULT FALSE,
-  heartworm_status TEXT, -- "negative", "positive", "unknown"
-  health_notes TEXT,
+-- Subscriptions: Users can only see their own subscriptions
+CREATE POLICY "Users can view own subscriptions" ON public.subscriptions
+  FOR SELECT USING (auth.uid() = user_id);
 
-  -- Special flags
-  special_note TEXT, -- "Very shy", "Heartworm positive", etc.
-  foster_to_adopt BOOLEAN NOT NULL DEFAULT FALSE,
-  available_for_reservation BOOLEAN NOT NULL DEFAULT FALSE,
+-- Contact Submissions: Admins can view all, anyone can create
+CREATE POLICY "Admins can view all contact submissions" ON public.contact_submissions
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE profiles.id = auth.uid()
+      AND profiles.role = 'admin'
+    )
+  );
 
-  status TEXT NOT NULL DEFAULT 'available' -- "available", "pending", "adopted"
-);
+CREATE POLICY "Anyone can create contact submissions" ON public.contact_submissions
+  FOR INSERT WITH CHECK (true);
 
-CREATE INDEX IF NOT EXISTS idx_animals_type ON animals(type);
-CREATE INDEX IF NOT EXISTS idx_animals_status ON animals(status);
-
--- Function to automatically update updated_at timestamp
+-- Functions and Triggers
+-- Update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -263,12 +200,29 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Create triggers for all tables
-CREATE TRIGGER update_tnr_requests_updated_at BEFORE UPDATE ON tnr_requests FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_adoption_applications_updated_at BEFORE UPDATE ON adoption_applications FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_surrender_requests_updated_at BEFORE UPDATE ON surrender_requests FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_foster_applications_updated_at BEFORE UPDATE ON foster_applications FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_volunteer_signups_updated_at BEFORE UPDATE ON volunteer_signups FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_donate_pledges_updated_at BEFORE UPDATE ON donate_pledges FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_animals_updated_at BEFORE UPDATE ON animals FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_conversations_updated_at BEFORE UPDATE ON public.conversations
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_posts_updated_at BEFORE UPDATE ON public.posts
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_subscriptions_updated_at BEFORE UPDATE ON public.subscriptions
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Create profile on user signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name)
+  VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+

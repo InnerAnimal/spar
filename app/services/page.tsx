@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { DonateSection } from '@/components/shared/DonateSection'
+import { DonateSection } from '../../components/shared/DonateSection'
+import { TNRRequestButton } from '@/components/CTAButtons'
 
 export default function ServicesPage() {
   const tnrSteps = [
@@ -20,7 +21,7 @@ export default function ServicesPage() {
       icon: '🏠',
       title: 'Return',
       description:
-        'Cats are returned to their familiar territory with a clipped ear to show they've been fixed.',
+        'Cats are returned to their familiar territory with a clipped ear to show they\'ve been fixed.',
     },
   ]
 
@@ -88,12 +89,11 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <Link
-            href="/forms/tnr-request"
-            className="inline-block bg-gray-900 text-white px-10 py-4 rounded-lg font-semibold text-lg hover:bg-gray-700 hover:-translate-y-1 transition-all shadow-lg"
-          >
-            Request TNR Assistance
-          </Link>
+          <TNRRequestButton
+            variant="secondary"
+            size="lg"
+            className="bg-gray-900 hover:bg-gray-700 text-white hover:-translate-y-1 shadow-lg"
+          />
         </div>
       </section>
 

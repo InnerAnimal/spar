@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { FileText, Paw, Heart, Home, Users, DollarSign } from 'lucide-react'
+import { FileText, PawPrint, Heart, Home, Users, DollarSign } from 'lucide-react'
 
 export default function FormsPage() {
   const forms = [
     {
-      icon: Paw,
+      icon: PawPrint,
       title: 'TNR Request',
       description:
         'Request Trap-Neuter-Return services for community cats in your area.',
@@ -46,7 +46,7 @@ export default function FormsPage() {
       icon: Users,
       title: 'Volunteer Signup',
       description:
-        'Sign up to volunteer and help make a difference in animals' lives.',
+        'Sign up to volunteer and help make a difference in animals\' lives.',
       href: '/forms/volunteer-signup',
       color: 'bg-indigo-50 border-indigo-200 hover:border-indigo-500',
     },
