@@ -10,10 +10,35 @@ export async function POST(request: NextRequest) {
     // Validate the form data
     const validatedData = tnrRequestSchema.parse(body)
 
-    // Save to database
-    const submission = await prisma.tNRRequest.create({
-      data: validatedData,
-    })
+    // Transform camelCase data to snake_case for database insertion
+    const dbData = {
+      first_name: validatedData.firstName,
+      last_name: validatedData.lastName,
+      address: validatedData.address,
+      address2: validatedData.address2,
+      city: validatedData.city,
+      state: validatedData.state,
+      zip_code: validatedData.zipCode,
+      phone: validatedData.phone,
+      email: validatedData.email,
+      how_many_cats: validatedData.howManyCats,
+      any_injured_or_sick: validatedData.anyInjuredOrSick,
+      how_long_had_them: validatedData.howLongHadThem,
+      are_they_fixed: validatedData.areTheyFixed,
+      additional_information: validatedData.additionalInformation,
+    }
+
+    // Save to database using Supabase
+    const { data: submission, error } = await supabase
+      .from('tnr_requests')
+      .insert([dbData])
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Supabase insert error:', error)
+      throw new Error('Failed to save TNR request')
+    }
 
     // TODO: Send email notifications here
     // await sendTNRConfirmationEmail(submission)
