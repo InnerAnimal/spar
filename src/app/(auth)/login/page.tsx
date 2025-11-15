@@ -91,13 +91,13 @@ export default function LoginPage() {
             </button>
           </div>
           <div className="text-center text-sm">
-            <Link href="/auth/reset" className="text-primary hover:underline">
+            <Link href="/reset" className="text-primary hover:underline">
               Forgot your password?
             </Link>
           </div>
           <div className="text-center text-sm">
             Don't have an account?{' '}
-            <Link href="/auth/signup" className="text-primary hover:underline">
+            <Link href="/signup" className="text-primary hover:underline">
               Sign up
             </Link>
           </div>

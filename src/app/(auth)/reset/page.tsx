@@ -16,7 +16,7 @@ export default function ResetPage() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset`,
+        redirectTo: `${window.location.origin}/reset`,
       })
 
       if (error) throw error
@@ -66,7 +66,7 @@ export default function ResetPage() {
             </button>
           </div>
           <div className="text-center text-sm">
-            <a href="/auth/login" className="text-primary hover:underline">
+            <a href="/login" className="text-primary hover:underline">
               Back to login
             </a>
           </div>

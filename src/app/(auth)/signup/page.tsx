@@ -31,7 +31,7 @@ export default function SignupPage() {
 
       if (error) throw error
 
-      router.push('/auth/login')
+      router.push('/login')
     } catch (err: any) {
       setError(err.message || 'An error occurred')
     } finally {
@@ -107,7 +107,7 @@ export default function SignupPage() {
           </div>
           <div className="text-center text-sm">
             Already have an account?{' '}
-            <a href="/auth/login" className="text-primary hover:underline">
+            <a href="/login" className="text-primary hover:underline">
               Sign in
             </a>
           </div>
