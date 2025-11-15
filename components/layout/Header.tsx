@@ -64,14 +64,6 @@ export function Header() {
             </li>
             <li>
               <Link
-                href="/services"
-                className="px-4 py-2.5 rounded-md font-medium text-[15px] hover:bg-gray-50 transition-colors"
-              >
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/forms"
                 className="px-4 py-2.5 rounded-md font-medium text-[15px] hover:bg-gray-50 transition-colors"
               >
@@ -80,10 +72,10 @@ export function Header() {
             </li>
             <li>
               <Link
-                href="/admin/animals"
+                href="/services"
                 className="px-4 py-2.5 rounded-md font-medium text-[15px] bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
-                Admin
+                Photo Upload
               </Link>
             </li>
           </ul>
@@ -120,13 +112,6 @@ export function Header() {
               Adopt
             </Link>
             <Link
-              href="/services"
-              className="block py-3 border-b border-gray-100 font-medium hover:text-green-600"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Services
-            </Link>
-            <Link
               href="/forms"
               className="block py-3 border-b border-gray-100 font-medium hover:text-green-600"
               onClick={() => setMobileMenuOpen(false)}
@@ -134,11 +119,11 @@ export function Header() {
               Forms
             </Link>
             <Link
-              href="/admin/animals"
+              href="/services"
               className="block py-3 mt-2 bg-blue-600 text-white rounded-md text-center font-semibold hover:bg-blue-700"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Admin
+              Photo Upload
             </Link>
           </div>
         )}
