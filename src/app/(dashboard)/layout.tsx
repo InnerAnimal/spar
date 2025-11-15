@@ -57,12 +57,20 @@ export default async function DashboardLayout({
             Video Calls
           </Link>
           {profile?.role === 'admin' && (
-            <Link
-              href="/app/admin"
-              className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
-            >
-              Admin
-            </Link>
+            <>
+              <Link
+                href="/app/admin"
+                className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
+              >
+                Admin
+              </Link>
+              <Link
+                href="/admin/animals"
+                className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
+              >
+                Manage Animals
+              </Link>
+            </>
           )}
           <div className="pt-4 border-t border-border mt-4">
             <LogoutButton />

@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { Image as ImageIcon, Settings, Users } from 'lucide-react'
 
 export default async function AdminPage() {
   const supabase = await createClient()
@@ -43,7 +45,55 @@ export default async function AdminPage() {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-      <div className="mt-8 grid gap-6 md:grid-cols-3">
+
+      {/* Quick Actions */}
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          <Link
+            href="/admin/animals"
+            className="group rounded-lg border-2 border-blue-200 bg-blue-50 p-6 hover:border-blue-400 hover:bg-blue-100 transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-blue-600 p-3">
+                <ImageIcon className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-blue-900">Manage Animals</h3>
+                <p className="text-sm text-blue-700">Upload photos & manage listings</p>
+              </div>
+            </div>
+          </Link>
+
+          <div className="rounded-lg border-2 border-gray-200 bg-gray-50 p-6">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-gray-400 p-3">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">User Management</h3>
+                <p className="text-sm text-gray-600">Coming soon</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-lg border-2 border-gray-200 bg-gray-50 p-6">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-gray-400 p-3">
+                <Settings className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
+                <p className="text-sm text-gray-600">Coming soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <h2 className="text-xl font-semibold mt-8 mb-4">Statistics</h2>
+      <div className="grid gap-6 md:grid-cols-3">
         <div className="rounded-lg border border-border bg-card p-6">
           <h3 className="text-lg font-semibold">Total Users</h3>
           <p className="mt-2 text-3xl font-bold">{userCount || 0}</p>
