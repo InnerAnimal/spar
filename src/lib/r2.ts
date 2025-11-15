@@ -151,3 +151,73 @@ export function generateFileKey(
   return `${userId}/${folder}/${timestamp}-${sanitizedFilename}`
 }
 
+/**
+ * R2 helper object for convenient access to all R2 functions
+ */
+export const r2 = {
+  /**
+   * Upload a file to R2
+   */
+  async uploadFile(
+    buffer: Buffer,
+    filename: string,
+    folder: string = 'uploads'
+  ): Promise<{ url: string; key: string }> {
+    const timestamp = Date.now()
+    const sanitizedFilename = filename.replace(/[^a-zA-Z0-9.-]/g, '_')
+    const key = `${folder}/${timestamp}-${sanitizedFilename}`
+
+    // Determine content type
+    const contentType =
+      filename.endsWith('.jpg') || filename.endsWith('.jpeg') ? 'image/jpeg' :
+      filename.endsWith('.png') ? 'image/png' :
+      filename.endsWith('.gif') ? 'image/gif' :
+      filename.endsWith('.webp') ? 'image/webp' :
+      'application/octet-stream'
+
+    return uploadToR2(key, buffer, contentType)
+  },
+
+  /**
+   * Delete a file from R2
+   */
+  async deleteFile(key: string): Promise<void> {
+    return deleteFromR2(key)
+  },
+
+  /**
+   * Get signed upload URL
+   */
+  async getSignedUploadUrl(key: string, expiresIn: number = 3600): Promise<string> {
+    const contentType =
+      key.endsWith('.jpg') || key.endsWith('.jpeg') ? 'image/jpeg' :
+      key.endsWith('.png') ? 'image/png' :
+      key.endsWith('.gif') ? 'image/gif' :
+      key.endsWith('.webp') ? 'image/webp' :
+      'application/octet-stream'
+
+    return getUploadUrl(key, contentType, expiresIn)
+  },
+
+  /**
+   * Get signed download URL
+   */
+  async getSignedDownloadUrl(key: string, expiresIn: number = 3600): Promise<string> {
+    return getDownloadUrl(key, expiresIn)
+  },
+
+  /**
+   * Get public URL
+   */
+  getPublicUrl(key: string): string {
+    return getPublicUrl(key)
+  },
+
+  /**
+   * List files
+   */
+  async listFiles(prefix?: string): Promise<string[]> {
+    return listR2Files(prefix)
+  },
+}
+
