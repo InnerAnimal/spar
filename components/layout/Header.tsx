@@ -64,7 +64,7 @@ export function Header() {
             </li>
             <li>
               <Link
-                href="/privacy"
+                href="/services"
                 className="px-4 py-2.5 rounded-md font-medium text-[15px] hover:bg-gray-50 transition-colors"
               >
                 Services
@@ -120,7 +120,7 @@ export function Header() {
               Adopt
             </Link>
             <Link
-              href="/privacy"
+              href="/services"
               className="block py-3 border-b border-gray-100 font-medium hover:text-green-600"
               onClick={() => setMobileMenuOpen(false)}
             >
