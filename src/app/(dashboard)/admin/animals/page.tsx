@@ -72,7 +72,7 @@ export default function AnimalsAdminPage() {
       {/* Action Buttons */}
       <div className="mb-6">
         <Link
-          href="/admin/animals/new"
+          href="/app/admin/animals/new"
           className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus className="w-5 h-5 mr-2" />
@@ -87,7 +87,7 @@ export default function AnimalsAdminPage() {
           <h3 className="text-lg font-medium text-gray-900 mb-2">No animals yet</h3>
           <p className="text-gray-600 mb-4">Get started by adding your first animal</p>
           <Link
-            href="/admin/animals/new"
+            href="/app/admin/animals/new"
             className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5 mr-2" />
@@ -144,14 +144,14 @@ export default function AnimalsAdminPage() {
                 {/* Actions */}
                 <div className="mt-4 flex gap-2">
                   <Link
-                    href={`/admin/animals/${animal.id}/edit`}
+                    href={`/app/admin/animals/${animal.id}/edit`}
                     className="flex-1 text-center px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm font-medium"
                   >
                     <Edit className="w-4 h-4 inline mr-1" />
                     Edit
                   </Link>
                   <Link
-                    href={`/admin/animals/${animal.id}/photos`}
+                    href={`/app/admin/animals/${animal.id}/photos`}
                     className="flex-1 text-center px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
                   >
                     <ImageIcon className="w-4 h-4 inline mr-1" />

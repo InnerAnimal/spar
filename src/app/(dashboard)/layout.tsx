@@ -65,7 +65,7 @@ export default async function DashboardLayout({
                 Admin
               </Link>
               <Link
-                href="/admin/animals"
+                href="/app/admin/animals"
                 className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
               >
                 Manage Animals
