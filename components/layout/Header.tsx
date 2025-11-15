@@ -72,14 +72,6 @@ export function Header() {
             </li>
             <li>
               <Link
-                href="/forms"
-                className="px-4 py-2.5 rounded-md font-medium text-[15px] hover:bg-gray-50 transition-colors"
-              >
-                Forms
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/admin/animals"
                 className="px-4 py-2.5 rounded-md font-medium text-[15px] bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
@@ -125,13 +117,6 @@ export function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Services
-            </Link>
-            <Link
-              href="/forms"
-              className="block py-3 border-b border-gray-100 font-medium hover:text-green-600"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Forms
             </Link>
             <Link
               href="/admin/animals"

@@ -130,6 +130,7 @@ export default function ServicesPage() {
                   alt={`Community Cat ${idx + 1}`}
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               </div>
             ))}
