@@ -236,7 +236,7 @@ model Animal {
   gender      String
   price       Int
   description String?
-  imageUrl    String?
+  imageUrl    String? // Legacy single image - kept for backward compatibility
 
   // Health info
   spayedNeutered       Boolean @default(false)
@@ -252,5 +252,32 @@ model Animal {
 
   status      String @default("available") // "available", "pending", "adopted"
 
+  // Relations
+  images      AnimalImage[]
+
   @@map("animals")
+}
+
+// Animal Images - supports multiple photos per animal
+model AnimalImage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  animalId  String
+  animal    Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  url       String   // Full URL to the image in R2
+  key       String   // R2 storage key for deletion
+  filename  String   // Original filename
+  fileSize  Int?     // File size in bytes
+  mimeType  String?  // e.g., "image/jpeg"
+
+  isPrimary Boolean @default(false) // Primary/featured image
+  order     Int     @default(0)     // Display order
+  caption   String?                 // Optional caption/description
+
+  @@map("animal_images")
+  @@index([animalId])
+  @@index([isPrimary])
 }
