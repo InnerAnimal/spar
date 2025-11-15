@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/db'
 import { r2 } from '@/lib/r2'
-
-const prisma = new PrismaClient()
 
 // POST /api/animals/:id/images - Upload images for an animal
 export async function POST(
