@@ -394,7 +394,7 @@ export default function AdoptPage() {
 
                   {animal.fosterToAdopt && (
                     <div className="bg-blue-50 border border-blue-300 rounded-lg p-3 mb-4 text-sm text-gray-800 font-medium">
-                      Foster-to-Adopt: Due to special care needs, this pet needs a loving foster home during treatment. We'll provide all medical care!
+                      Foster-to-Adopt: Due to special care needs, this pet needs a loving foster home during treatment. We&apos;ll provide all medical care!
                     </div>
                   )}
 

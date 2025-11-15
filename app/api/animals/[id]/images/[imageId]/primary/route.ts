@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 
+// Force dynamic rendering to prevent build-time errors
+export const dynamic = 'force-dynamic'
+
 // PATCH /api/animals/:id/images/:imageId/primary - Set image as primary
 export async function PATCH(
   request: NextRequest,

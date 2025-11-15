@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { r2 } from '@/lib/r2'
 
+// Force dynamic rendering to prevent build-time errors
+export const dynamic = 'force-dynamic'
+
 // POST /api/animals/:id/images - Upload images for an animal
 export async function POST(
   request: NextRequest,

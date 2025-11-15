@@ -12,7 +12,7 @@ export default function AboutPage() {
               with innovative media solutions powered by artificial intelligence.
             </p>
             <p>
-              We combine the power of OpenAI's GPT-4 and Anthropic's Claude AI to deliver
+              We combine the power of OpenAI&apos;s GPT-4 and Anthropic&apos;s Claude AI to deliver
               intelligent content creation, community engagement, and video conferencing solutions.
             </p>
             <p>

@@ -36,7 +36,7 @@ export default function ContactPage() {
           {submitted ? (
             <div className="mt-8 rounded-lg border border-green-500 bg-green-50 p-6 dark:bg-green-950">
               <p className="text-green-800 dark:text-green-200">
-                Thank you for your message! We'll get back to you soon.
+                Thank you for your message! We&apos;ll get back to you soon.
               </p>
             </div>
           ) : (

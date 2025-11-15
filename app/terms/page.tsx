@@ -33,8 +33,8 @@ export default function TermsPage() {
 
         <h2>4. Liability</h2>
         <p>
-          Southern Pets Animal Rescue provides animals for adoption on an "as
-          is" basis. We make no guarantees about the temperament or health
+          Southern Pets Animal Rescue provides animals for adoption on an &quot;as
+          is&quot; basis. We make no guarantees about the temperament or health
           conditions beyond what is documented in our records.
         </p>
 

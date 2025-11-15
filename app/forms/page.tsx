@@ -69,7 +69,7 @@ export default function FormsPage() {
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Select a form below to get started. All submissions are reviewed by
-            our team and we'll get back to you as soon as possible.
+            our team and we&apos;ll get back to you as soon as possible.
           </p>
         </div>
 

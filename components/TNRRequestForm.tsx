@@ -217,7 +217,7 @@ export default function TNRRequestForm({ onSuccess, onClose }: TNRRequestFormPro
           Request Submitted!
         </h3>
         <p className="text-gray-600 dark:text-gray-400">
-          We've received your TNR request and will contact you soon.
+          We&apos;ve received your TNR request and will contact you soon.
         </p>
       </div>
     );

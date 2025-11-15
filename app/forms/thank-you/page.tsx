@@ -15,7 +15,7 @@ export default function ThankYouPage() {
           </h1>
 
           <p className="text-lg text-gray-600 mb-8">
-            Your form has been successfully submitted. We've received your
+            Your form has been successfully submitted. We&apos;ve received your
             information and will review it shortly. A member of our team will be
             in touch with you soon.
           </p>
@@ -23,7 +23,7 @@ export default function ThankYouPage() {
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
             <p className="text-green-800 font-medium">
               You should receive a confirmation email at the address you
-              provided. Please check your spam folder if you don't see it within
+              provided. Please check your spam folder if you don&apos;t see it within
               a few minutes.
             </p>
           </div>

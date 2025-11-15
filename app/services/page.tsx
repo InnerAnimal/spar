@@ -36,16 +36,16 @@ export default function ServicesPage() {
           const dynamicImages: string[] = []
           for (const cat of cats) {
             if (cat.images && cat.images.length > 0) {
-              const primaryImage = cat.images.find((img) => img.isPrimary)
+              const primaryImage = cat.images.find((img: AnimalImage) => img.isPrimary)
               dynamicImages.push(primaryImage?.url || cat.images[0].url)
             }
           }
 
           if (dynamicImages.length > 0) {
-            setCatImages([
-              dynamicImages[0] || catImages[0],
-              dynamicImages[1] || catImages[1],
-              dynamicImages[2] || catImages[2],
+            setCatImages((prevImages) => [
+              dynamicImages[0] || prevImages[0],
+              dynamicImages[1] || prevImages[1],
+              dynamicImages[2] || prevImages[2],
             ])
           }
         }
