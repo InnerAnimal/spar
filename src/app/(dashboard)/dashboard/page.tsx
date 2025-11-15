@@ -34,7 +34,7 @@ export default async function DashboardPage() {
             Start chatting with AI assistants
           </p>
           <Link
-            href="/app/chat"
+            href="/chat"
             className="mt-4 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Go to Chat
@@ -46,7 +46,7 @@ export default async function DashboardPage() {
             Join discussions and share ideas
           </p>
           <Link
-            href="/app/community"
+            href="/community"
             className="mt-4 inline-block rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Visit Community

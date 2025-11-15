@@ -80,7 +80,7 @@ export function Header() {
             </li>
             <li>
               <Link
-                href="/app/admin"
+                href="/admin/animals"
                 className="px-4 py-2.5 rounded-md font-medium text-[15px] bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
                 Admin
@@ -134,7 +134,7 @@ export function Header() {
               Forms
             </Link>
             <Link
-              href="/app/admin"
+              href="/admin/animals"
               className="block py-3 mt-2 bg-blue-600 text-white rounded-md text-center font-semibold hover:bg-blue-700"
               onClick={() => setMobileMenuOpen(false)}
             >

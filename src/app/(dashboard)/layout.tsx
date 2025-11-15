@@ -27,31 +27,31 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen">
       <aside className="w-64 border-r border-border bg-card">
         <div className="p-6">
-          <Link href="/app/dashboard" className="text-xl font-bold hover:text-primary">
+          <Link href="/dashboard" className="text-xl font-bold hover:text-primary">
             InnerAnimalMedia
           </Link>
         </div>
         <nav className="space-y-1 px-4">
           <Link
-            href="/app/dashboard"
+            href="/dashboard"
             className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
           >
             Dashboard
           </Link>
           <Link
-            href="/app/chat"
+            href="/chat"
             className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
           >
             AI Chat
           </Link>
           <Link
-            href="/app/community"
+            href="/community"
             className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
           >
             Community
           </Link>
           <Link
-            href="/app/video"
+            href="/video"
             className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
           >
             Video Calls
@@ -59,13 +59,13 @@ export default async function DashboardLayout({
           {profile?.role === 'admin' && (
             <>
               <Link
-                href="/app/admin"
+                href="/admin"
                 className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
               >
                 Admin
               </Link>
               <Link
-                href="/app/admin/animals"
+                href="/admin/animals"
                 className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent"
               >
                 Manage Animals

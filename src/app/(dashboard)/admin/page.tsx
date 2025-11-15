@@ -20,7 +20,7 @@ export default async function AdminPage() {
     .single()
 
   if (profile?.role !== 'admin') {
-    redirect('/app/dashboard')
+    redirect('/dashboard')
   }
 
   // Get stats
@@ -51,7 +51,7 @@ export default async function AdminPage() {
         <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <Link
-            href="/app/admin/animals"
+            href="/admin/animals"
             className="group rounded-lg border-2 border-blue-200 bg-blue-50 p-6 hover:border-blue-400 hover:bg-blue-100 transition-all"
           >
             <div className="flex items-center gap-3">

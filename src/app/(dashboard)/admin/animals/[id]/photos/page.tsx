@@ -147,7 +147,7 @@ export default function AnimalPhotosPage() {
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <p className="text-red-600">Error: {error}</p>
           <Link
-            href="/app/admin/animals"
+            href="/admin/animals"
             className="text-blue-600 hover:underline mt-2 inline-block"
           >
             Back to Animals
@@ -162,7 +162,7 @@ export default function AnimalPhotosPage() {
       {/* Header */}
       <div className="mb-6">
         <Link
-          href="/app/admin/animals"
+          href="/admin/animals"
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
