@@ -35,11 +35,28 @@ A full-stack platform built with Next.js 14, Supabase, Stripe, and AI integratio
 - OpenAI API key
 - Anthropic API key
 
-### Installation
+### Quick Setup (Automated)
+
+For the fastest setup experience, use our automated setup script:
+
+```bash
+# One-command setup
+bash scripts/setup-all.sh
+```
+
+This will guide you through:
+- Cloudflare R2 storage setup
+- Environment configuration
+- GitHub secrets (for CI/CD)
+
+See [`scripts/README.md`](scripts/README.md) for detailed documentation.
+
+### Manual Installation
 
 1. Clone the repository:
 ```bash
-cd inneranimalmedia
+git clone https://github.com/InnerAnimal/spar.git
+cd spar
 ```
 
 2. Install dependencies:
@@ -48,8 +65,15 @@ npm install
 ```
 
 3. Set up environment variables:
+
+**Option A: Automated (Recommended)**
 ```bash
-cp .env.local.example .env.local
+bash scripts/cloudflare-interactive-setup.sh
+```
+
+**Option B: Manual**
+```bash
+cp .env.example .env.local
 ```
 
 Fill in your API keys in `.env.local`:
@@ -61,13 +85,20 @@ Fill in your API keys in `.env.local`:
 - `STRIPE_SECRET_KEY`: Your Stripe secret key
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
 - `RESEND_API_KEY`: Your Resend API key
+- `CLOUDFLARE_R2_*`: Cloudflare R2 credentials (see [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md))
 
-4. Set up the database:
+4. Set up GitHub Secrets (for deployment):
+```bash
+pip install PyNaCl requests
+python3 scripts/setup-github-secrets.py
+```
+
+5. Set up the database:
    - Go to your Supabase project dashboard
    - Navigate to SQL Editor
    - Run the SQL from `supabase/migrations/001_initial_schema.sql`
 
-5. Run the development server:
+6. Run the development server:
 ```bash
 npm run dev
 ```
@@ -130,17 +161,62 @@ See `supabase/migrations/001_initial_schema.sql` for the complete schema.
 
 ## Deployment
 
+### Automated Deployment (Recommended)
+
+The project includes automated deployment workflows for both Vercel and Cloudflare Pages.
+
+**GitHub Secrets** (required for automated deployments):
+```bash
+# Set up all GitHub secrets automatically
+python3 scripts/setup-github-secrets.py
+```
+
+See [GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md) for detailed instructions.
+
 ### Vercel Deployment
 
 1. Push your code to GitHub
 2. Import your repository in Vercel
-3. Add all environment variables
+3. Add all environment variables (or use automated setup script)
 4. Deploy
 
 Or use Vercel CLI:
 ```bash
 vercel --prod
 ```
+
+See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for complete guide.
+
+### Cloudflare Pages Deployment
+
+The project includes a GitHub Actions workflow for automatic deployment to Cloudflare Pages:
+
+1. Set up Cloudflare R2 (for storage)
+2. Configure GitHub secrets
+3. Push to `main` branch
+
+The workflow automatically builds and deploys on push.
+
+See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) for complete Cloudflare R2 setup guide.
+
+## Documentation
+
+- **[CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md)** - Complete Cloudflare R2 setup guide
+- **[GITHUB_SECRETS_SETUP.md](GITHUB_SECRETS_SETUP.md)** - GitHub secrets configuration
+- **[VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)** - Vercel deployment guide
+- **[scripts/README.md](scripts/README.md)** - Automation scripts documentation
+- **[DEPLOYMENT_SUMMARY.md](DEPLOYMENT_SUMMARY.md)** - Deployment features overview
+
+## Cloudflare R2 Storage
+
+This project uses Cloudflare R2 for file storage with:
+- Zero egress fees
+- S3-compatible API
+- Signed URLs for secure uploads/downloads
+- Public URL support
+- User-specific file organization
+
+See the [Cloudflare Setup Guide](CLOUDFLARE_SETUP.md) for setup instructions.
 
 ## License
 
