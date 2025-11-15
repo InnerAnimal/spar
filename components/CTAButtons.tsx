@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useModal } from '@/contexts/ModalContext';
 
 interface ButtonProps {
@@ -46,18 +47,18 @@ export function TNRRequestButton({
   );
 }
 
-export function AdoptionButton({ 
-  variant = 'primary', 
-  size = 'md', 
+export function AdoptionButton({
+  variant = 'primary',
+  size = 'md',
   fullWidth = false,
   className = '',
   children
 }: ButtonProps & { children?: React.ReactNode }) {
-  const { openModal } = useModal();
+  const router = useRouter();
 
   return (
     <button
-      onClick={() => openModal('adoption')}
+      onClick={() => router.push('/forms/adoption-application')}
       className={`
         ${baseStyles}
         ${variantStyles[variant]}

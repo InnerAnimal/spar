@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ImageUpload } from '@/components/ui/image-upload'
@@ -33,11 +33,7 @@ export default function AnimalPhotosPage() {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchAnimalAndImages()
-  }, [animalId])
-
-  const fetchAnimalAndImages = async () => {
+  const fetchAnimalAndImages = useCallback(async () => {
     try {
       const response = await fetch(`/api/animals/${animalId}`)
       if (!response.ok) {
@@ -51,7 +47,11 @@ export default function AnimalPhotosPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [animalId])
+
+  useEffect(() => {
+    fetchAnimalAndImages()
+  }, [fetchAnimalAndImages])
 
   const handleUpload = async (files: File[]) => {
     setUploading(true)
