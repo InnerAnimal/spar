@@ -78,6 +78,14 @@ export function Header() {
                 Forms
               </Link>
             </li>
+            <li>
+              <Link
+                href="/admin/animals"
+                className="px-4 py-2.5 rounded-md font-medium text-[15px] bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+              >
+                Admin
+              </Link>
+            </li>
           </ul>
 
           {/* Mobile Menu Toggle */}
@@ -120,10 +128,17 @@ export function Header() {
             </Link>
             <Link
               href="/forms"
-              className="block py-3 font-medium hover:text-green-600"
+              className="block py-3 border-b border-gray-100 font-medium hover:text-green-600"
               onClick={() => setMobileMenuOpen(false)}
             >
               Forms
+            </Link>
+            <Link
+              href="/admin/animals"
+              className="block py-3 mt-2 bg-blue-600 text-white rounded-md text-center font-semibold hover:bg-blue-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Admin
             </Link>
           </div>
         )}
