@@ -3,20 +3,29 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Check if Supabase is configured
+  const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!user) {
-    redirect('/login')
+  let user = null
+  let profile = null
+
+  if (hasSupabase) {
+    const supabase = await createClient()
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+
+    if (!user) {
+      redirect('/login')
+    }
+
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+
+    profile = profileData
   }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
 
   return (
     <div className="p-8">
@@ -25,7 +34,7 @@ export default async function DashboardPage() {
         <div className="rounded-lg border border-border bg-card p-6">
           <h3 className="text-lg font-semibold">Welcome back!</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            {profile?.full_name || user.email}
+            {profile?.full_name || user?.email || 'Guest'}
           </p>
         </div>
         <div className="rounded-lg border border-border bg-card p-6">

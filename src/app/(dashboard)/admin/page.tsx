@@ -4,43 +4,58 @@ import Link from 'next/link'
 import { Image as ImageIcon, Settings, Users } from 'lucide-react'
 
 export default async function AdminPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Check if Supabase is configured
+  const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!user) {
-    redirect('/login')
+  let userCount = 0
+  let conversationCount = 0
+  let postCount = 0
+  let recentSubmissions: any[] = []
+
+  if (hasSupabase) {
+    const supabase = await createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      redirect('/login')
+    }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role !== 'admin') {
+      redirect('/dashboard')
+    }
+
+    // Get stats
+    const { count: users } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+
+    const { count: conversations } = await supabase
+      .from('conversations')
+      .select('*', { count: 'exact', head: true })
+
+    const { count: posts } = await supabase
+      .from('posts')
+      .select('*', { count: 'exact', head: true })
+
+    const { data: submissions } = await supabase
+      .from('contact_submissions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10)
+
+    userCount = users || 0
+    conversationCount = conversations || 0
+    postCount = posts || 0
+    recentSubmissions = submissions || []
   }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (profile?.role !== 'admin') {
-    redirect('/dashboard')
-  }
-
-  // Get stats
-  const { count: userCount } = await supabase
-    .from('profiles')
-    .select('*', { count: 'exact', head: true })
-
-  const { count: conversationCount } = await supabase
-    .from('conversations')
-    .select('*', { count: 'exact', head: true })
-
-  const { count: postCount } = await supabase
-    .from('posts')
-    .select('*', { count: 'exact', head: true })
-
-  const { data: recentSubmissions } = await supabase
-    .from('contact_submissions')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(10)
 
   return (
     <div className="p-8">

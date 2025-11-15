@@ -8,20 +8,32 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Check if Supabase is configured
+  const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!user) {
-    redirect('/login')
+  let user = null
+  let profile = null
+
+  if (hasSupabase) {
+    const supabase = await createClient()
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+
+    if (!user) {
+      redirect('/login')
+    }
+
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    profile = profileData
   }
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
+  // For now, show admin links if no auth is configured (development mode)
+  const showAdminLinks = !hasSupabase || profile?.role === 'admin'
 
   return (
     <div className="flex min-h-screen">
@@ -56,7 +68,7 @@ export default async function DashboardLayout({
           >
             Video Calls
           </Link>
-          {profile?.role === 'admin' && (
+          {showAdminLinks && (
             <>
               <Link
                 href="/admin"
@@ -72,9 +84,11 @@ export default async function DashboardLayout({
               </Link>
             </>
           )}
-          <div className="pt-4 border-t border-border mt-4">
-            <LogoutButton />
-          </div>
+          {hasSupabase && (
+            <div className="pt-4 border-t border-border mt-4">
+              <LogoutButton />
+            </div>
+          )}
         </nav>
       </aside>
       <main className="flex-1">{children}</main>
